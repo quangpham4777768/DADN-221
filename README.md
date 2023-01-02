@@ -1,5 +1,5 @@
 # Tải Androi Studio {#1}
-Download Androi Studio tại : https://developer.android.com/studio?hl=vi
+Download Androi Studio tại : https://developer.android.com/studio?hl=vi , việc cài đặt này để anh em thống nhất 1 màn hình và khi báo cáo có thấy lấy máy của ai thuyết trình cũng được! ( Nếu máy cùi quá thì tải expo trên di động để xài )
 
 + Khởi động lên sẽ có giao diện như vậy
 ![alt text](./img/androi1.png)
@@ -29,7 +29,7 @@ Download Androi Studio tại : https://developer.android.com/studio?hl=vi
 
 ## Backend và Database 
 
-+ Cài đặt các modulse : 
++ Cài đặt các modulse , vào terminal của thư mục BE: 
 
 ~~~ 
     'npm install'
@@ -48,7 +48,7 @@ Download Androi Studio tại : https://developer.android.com/studio?hl=vi
 
 ## Frontend
 
-+ Cài đặt các modules :
++ Cài đặt các modules vào terminal của FE /src/frontend/ :
 
 ~~~ 
     'npm install'
