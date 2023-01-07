@@ -4,7 +4,9 @@ import { StyleSheet, Text, View } from "react-native";
 import Login from "./screens/login.screen";
 import CreateAccount from "./screens/create_account.screen";
 import Analytics from "./screens/analytics.screen";
+import RoomDetail from "./screens/room_detail.screen";
 import TabNavigation from "./screens/tabnavigation";
+import Booking from "./screens/booking.screen";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -58,6 +60,16 @@ export default function App() {
                             options={headerConfig("#dfdfdf", false)}
                             name="UPDATE PROFILES"
                             component={Profile}
+                        />
+                        <Stack.Screen
+                            options={headerConfig("#dfdfdf", false)}
+                            name="ROOM DETAIL"
+                            component={RoomDetail}
+                        />
+                        <Stack.Screen
+                            options={headerConfig("#dfdfdf", false)}
+                            name="BOOKING"
+                            component={Booking}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
