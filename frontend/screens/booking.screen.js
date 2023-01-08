@@ -4,9 +4,8 @@ import IconM from "react-native-vector-icons/MaterialIcons";
 import Button from "../component/button.component";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import AnalyticsItem from "../component/analytics.component";
 
-const Booking = ({navigation}) => {
+const Booking = ({route, navigation}) => {
   const [dateShow, setDateShow] = useState(false)
   const [date, setDate] = useState(new Date())
   const [dateText, setDateText] = useState(new Date())
@@ -35,8 +34,16 @@ const Booking = ({navigation}) => {
   }
 
   const Book = () => {
-    navigation.navigate("HOME")
-    
+    date.setHours(date.getHours() + 7)
+    date1.setHours(date1.getHours() + 7)
+    route.params.setStart(date)
+    route.params.setEnd(date1)
+    var currentTime = new Date();
+    currentTime.setHours(currentTime.getHours() + 7)
+    if (date.valueOf() > currentTime.valueOf() || date1.valueOf() < currentTime.valueOf())
+      route.params.setStatus(0)
+    else route.params.setStatus(1)
+    navigation.goBack()
   }
 
     return (

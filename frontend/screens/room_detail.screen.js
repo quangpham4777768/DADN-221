@@ -8,10 +8,16 @@ import AnalyticsItem from "../component/analytics.component";
 
 const name = "Room 101";
 
+const RoomDetail = ({route, navigation}) => {
 
-const roomStatus = 0;
+  const [status, setStatus] = useState(0)
+  const [start, setStart] = useState(new Date())
+  const [end, setEnd] = useState(new Date())
 
-const RoomDetail = ({navigation}) => {
+  const Book = () => {
+    navigation.navigate("BOOKING", { setStatus, setStart, setEnd })
+  }
+
   const [doorStatus, setDoorStatus] = useState("0");
   const [doorTimestamp, setDoorTimestamp] = useState("0");
   const getValue = async () => {
@@ -20,6 +26,7 @@ const RoomDetail = ({navigation}) => {
     );
     setDoorStatus(result.data.last_value);
     setDoorTimestamp(result.data.updated_at);
+    // getStatus();
   }
   useEffect(() => {
     const isMounted = true;
@@ -98,7 +105,7 @@ const RoomDetail = ({navigation}) => {
                   </View>
                   <View style={style.infoItem}>
                     <Text style={style.titleItem}>Room Status</Text>
-                      {roomStatus == 0 && <Text style={style.desItem}>Ready to use</Text>
+                      {status == 0 && <Text style={style.desItem}>Ready to use</Text>
                       || <Text style={style.desItem}>In use</Text>}
                   </View>
                 </View>
@@ -114,7 +121,7 @@ const RoomDetail = ({navigation}) => {
               }}
             >
               <Button
-                onPress={() => navigation.navigate("BOOKING")}
+                onPress={Book}
                 title="Book"
               />
             </View>
