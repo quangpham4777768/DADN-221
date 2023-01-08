@@ -1,16 +1,36 @@
 import { StyleSheet, View, Text, SafeAreaView, FlatList, Pressable, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IconM from "react-native-vector-icons/MaterialIcons";
 import Button from "../component/button.component";
-
+import axios from "axios";
+import Moment from 'moment';
 import AnalyticsItem from "../component/analytics.component";
 
 const name = "Room 101";
-const doorStatus = 0;
-const doorTimestamp = "11:00 06/01/2022";
+
+
 const roomStatus = 0;
 
 const RoomDetail = ({navigation}) => {
+  const [doorStatus, setDoorStatus] = useState("0");
+  const [doorTimestamp, setDoorTimestamp] = useState("0");
+  const getValue = async () => {
+    const result = await axios.get(
+    `https://io.adafruit.com/api/v2/HungNguyenHung/feeds/bbc-magnetic`
+    );
+    setDoorStatus(result.data.last_value);
+    setDoorTimestamp(result.data.updated_at);
+  }
+  useEffect(() => {
+    const isMounted = true;
+    const intervalid = setInterval(() => {
+        getValue();
+    }, 1000);
+    return () => {
+        clearInterval(intervalid);
+        isMounted = false;
+    };
+}, []);
     return (
         <View style={style.container}>
           <TouchableOpacity
@@ -73,8 +93,8 @@ const RoomDetail = ({navigation}) => {
                   </View>
                   <View style={style.infoItem}>
                     <Text style={style.titleItem}>Door Status</Text>
-                      {doorStatus == 0 && <Text style={style.desItem}>Close at {doorTimestamp}</Text>
-                      || <Text style={style.desItem}>Open at {doorTimestamp}</Text>}
+                      {doorStatus == 0 && <Text style={style.desItem}>Close at {Moment(doorTimestamp).format('HH:mm DD/MM/YYYY')}</Text>
+                      || <Text style={style.desItem}>Open at {Moment(doorTimestamp).format('HH:mm DD/MM/YYYY')}</Text>}
                   </View>
                   <View style={style.infoItem}>
                     <Text style={style.titleItem}>Room Status</Text>
