@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import IconM from "react-native-vector-icons/MaterialIcons";
 import Button from "../component/button.component";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import axios from "axios";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Booking = ({route, navigation}) => {
@@ -33,6 +34,21 @@ const Booking = ({route, navigation}) => {
     props.output(selectedDate1)
   }
 
+  const HandleLed = async (value) => {
+    const data = {
+          "value": value
+  }
+    const result = await axios.post(
+      `https://io.adafruit.com/api/v2/HungNguyenHung/feeds/bbc-iot-led/data`,
+      data,
+      {
+          headers: {
+              "X-AIO-Key": "aio_nNEI91qf86IuUlu3GvwXp6xVGGj6"
+          }
+      }
+    )
+  }
+
   const Book = () => {
     date.setHours(date.getHours() + 7)
     date1.setHours(date1.getHours() + 7)
@@ -40,9 +56,15 @@ const Booking = ({route, navigation}) => {
     route.params.setEnd(date1)
     var currentTime = new Date();
     currentTime.setHours(currentTime.getHours() + 7)
-    if (date.valueOf() > currentTime.valueOf() || date1.valueOf() < currentTime.valueOf())
+    if (date.valueOf() > currentTime.valueOf() || date1.valueOf() < currentTime.valueOf() && route.params.status){
+      HandleLed(0)
       route.params.setStatus(0)
-    else route.params.setStatus(1)
+    }
+      
+    else if (date.valueOf() < currentTime.valueOf() && date1.valueOf() > currentTime.valueOf() && !route.params.status){
+      HandleLed(1)
+      route.params.setStatus(1)
+    } 
     navigation.goBack()
   }
 
