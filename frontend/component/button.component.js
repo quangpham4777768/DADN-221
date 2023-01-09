@@ -27,7 +27,7 @@ const Button = (props) => {
         >
             <Text
                 style={{
-                    fontSize: 14,
+                    fontSize: 20,
                     fontWeight: "bold",
                     letterSpacing: 1,
                     color: tColor,

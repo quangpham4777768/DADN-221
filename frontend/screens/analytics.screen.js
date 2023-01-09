@@ -6,37 +6,36 @@ import AnalyticsItem from "../component/analytics.component";
 const devices = [
     {
         id: "1",
-        name: "Humid",
-        image: require('./../assets/images/water.png'),
+        name: "Room 101",
+        image: require('./../assets/images/home.png'),
     },
     {
         id: "2",
-        name: "Temperature",
-        image: require("./../assets/images/temp.png"),
+        name: "Room 102",
+        image: require("./../assets/images/home.png"),
     },
     {
         id: "3",
-        name: "Oxygen Levels",
-        image: require("./../assets/images/Oxigen.png"),
+        name: "Room 201",
+        image: require("./../assets/images/home.png"),
     },
     {
         id: "4",
-        name: "PH concentration",
-        image: require("./../assets/images/ph.png"),
+        name: "Room 202",
+        image: require("./../assets/images/home.png"),
     }
 ]
 
-const Analytics = () => {
+const Analytics = ({navigation}) => {
 
     const renderDevice = ({item}) => {
         return (
-            <AnalyticsItem name={item.name} image={item.image} />
+                <AnalyticsItem name={item.name} image={item.image} />
         )
     }
 
     return (
         <View style={style.container}>
-
             <View style={style.title}>
                 <Text
                     style={{
@@ -46,7 +45,7 @@ const Analytics = () => {
                         letterSpacing: 1,
                     }}
                 >
-                    ANALYTICS
+                    ROOM LIST
                 </Text>
             </View>
 
@@ -57,7 +56,6 @@ const Analytics = () => {
                     keyExtractor={(device) => device.id}
                     numColumns={2}
                 >
-
                 </FlatList>
             </SafeAreaView>
         </View>
@@ -81,8 +79,10 @@ const style = StyleSheet.create({
     },
     grid: {
         flex: 1,
-        justifyContent: 'center',
         width: '100%',
+    },
+    room: {
+
     },
 });
 

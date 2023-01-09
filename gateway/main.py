@@ -5,10 +5,9 @@ import random
 import time
 import serial.tools.list_ports
 
-
-AIO_FEED_IDS = ["bbc-temperature","bcc-humid","bcc-light","bbc-pumpin","bbc-pumpout"]
-AIO_USERNAME = "nvmhai0205"
-AIO_KEY = "aio_elDy24Jp8pJXA5K0wp5B52L1mCHc"
+AIO_FEED_IDS = ["bbc-speaker","bbc-iot-led","bbc-magnetic","bbc-card"]
+ADAFRUIT_IO_USERNAME = "HungNguyenHung"
+ADAFRUIT_IO_KEY = "aio_cpcs55d5sPSzqHKY5Snyabd3Xk8W"
 
 def connected(client) :
     print("Ket noi thanh cong...")
@@ -32,24 +31,24 @@ def message(client, feed_id, payload ):
         ser.write((str(payload) + "#\n").encode())
 
 def getPort () :
-    # ports = serial.tools.list_ports.comports()
-    # N = len(ports)
-    # commPort = "None"
-    # for i in range(0, N):
-    #     port = ports[i]
-    #     strPort = str(port)
-    #     # if "USB Serial Device" in strPort:
-    #     if "ELTIMA Virtual Serial Port" in strPort:
-    #         splitPort = strPort.split(" ")
-    #         commPort = (splitPort[0])
-    # return commPort
-    return "COM6"
+    ports = serial.tools.list_ports.comports()
+    N = len(ports)
+    commPort = "None"
+    for i in range(0, N):
+        port = ports[i]
+        strPort = str(port)
+        # if "USB Serial Device" in strPort:
+        if "ELTIMA Virtual Serial Port" in strPort:
+            splitPort = strPort.split(" ")
+            commPort = (splitPort[0])
+    return commPort
+    # return "COM6"
 
 isMicrobitConnected = False
 if getPort() != "None":
     print("Connect with " + getPort())
-    ser = serial.Serial(port=getPort(), baudrate=115200)
-    isMicrobitConnected = True
+    ser = serial . Serial ( port = getPort () , baudrate =115200)
+    # isMicrobitConnected = True
 
 def processData ( data ) :
     data = data.replace("!", "")
@@ -57,22 +56,20 @@ def processData ( data ) :
     splitData = data.split (":")
     print ( splitData )
     try:
-        if splitData[1] == "TEMP":
-            client.publish("bbc-temperature", splitData[2])
-        elif splitData[1] == "HUMI":
-            client.publish("bbc-humid", splitData[2])
-        elif splitData[1] == "LIGHT":
-            client.publish("bbc-light", splitData[2])
-        elif splitData[1] == "PUMPIN":
-            client.publish("bbc-pumpin", splitData[2])
-        elif splitData[1] == "PUMPOUT":
-            client.publish("bbc-pumpout", splitData[2])
+        if splitData[1] == "SPEAKER":
+            client.publish("bbc-speaker", splitData[2])
+        elif splitData[1] == "LED":
+            client.publish("bbc-iot-led", splitData[2])
+        elif splitData[1] == "MAGNETIC":
+            client.publish("bbc-magnetic", splitData[2])
+        elif splitData[1] == "CARD":
+            client.publish("bbc-card", splitData[2])
     except:
             pass
         
 mess = ""
 def readSerial () :
-    bytesToRead = ser . inWaiting ()
+    bytesToRead = ser.inWaiting ()
     if ( bytesToRead > 0) :
         global mess
         mess = mess + ser.read ( bytesToRead ).decode ("UTF-8")
@@ -86,7 +83,7 @@ def readSerial () :
                 mess = mess [ end +1:]
                 
 
-client = MQTTClient( AIO_USERNAME , AIO_KEY )
+client = MQTTClient( ADAFRUIT_IO_USERNAME , ADAFRUIT_IO_KEY )
 client.on_connect = connected
 client.on_disconnect = disconnected
 client.on_message = message
@@ -102,5 +99,4 @@ while True:
     # time.sleep (10)
     if isMicrobitConnected:
         readSerial()
-
     time.sleep(1)
