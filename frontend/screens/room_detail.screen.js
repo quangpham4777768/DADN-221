@@ -53,6 +53,21 @@ const RoomDetail = ({route, navigation}) => {
     }
   }
 
+  const handleBuzzer = async (value) => {
+    const data = {
+      "value": value
+    }
+    const result = await axios.post(
+      `https://io.adafruit.com/api/v2/HungNguyenHung/feeds/bbc-buzzer/data`,
+      data,
+      {
+          headers: {
+              "X-AIO-Key": "aio_YsCI15HL1s95QqYrT2WZtWMtv7ki"
+          }
+      }
+  )
+  }
+
   useEffect(() => {
     if(lastUpdate.valueOf() > timeFlag.valueOf()){
       if(personList.some(item => personData.id == item.id)){
@@ -60,12 +75,19 @@ const RoomDetail = ({route, navigation}) => {
         setNoPeople(noPeople - 1)
       }
       else {
+        if(lastUpdate.valueOf() < start.valueOf() || lastUpdate.valueOf() > end.valueOf()){
+          handleBuzzer(1)
+          setTimeout(function(){
+            handleBuzzer(0)
+        }, 10000);
+        }
         personData && setPersonList(list => [...list, personData])
         setNoPeople(noPeople + 1)
       }
       
       setTimeFlag(new Date())
     }
+    
   }, [lastUpdate])
 
   useEffect(() => {
@@ -172,7 +194,7 @@ const RoomDetail = ({route, navigation}) => {
                   </View>
                   <View style={style.infoItem}>
                     <Text style={style.titleItem}>Room Status</Text>
-                      {status == 0 && <Text style={style.desItem}>Ready to use</Text>
+                      {status == 0 && <Text style={style.desItem}>Ready to book</Text>
                       || <Text style={style.desItem}>In use</Text>}
                   </View>
                 </View>
